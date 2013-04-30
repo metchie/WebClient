@@ -1,0 +1,17 @@
+import java.io.IOException;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+
+public class ConnectionProvider {
+	
+	private static final String ServerIP = "139.179.103.220"; 
+	private static final int portNumber = 9000;
+	
+	public static HttpURLConnection getUrlConnection(int option ) throws IOException{
+		URL url = new URL("http://" + ServerIP + ":" + portNumber + "/login");
+		return ( HttpURLConnection) url.openConnection();
+   	}//end of doPost
+
+}

@@ -1,0 +1,116 @@
+import java.io.DataOutputStream;
+import java.io.IOException;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import java.net.HttpURLConnection;
+
+@WebServlet("/LoginRegister")
+public class LoginRegister extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	private int action;
+	
+    public LoginRegister() {
+        super();
+    }
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String pressed = request.getParameter("submit");
+		//HttpSession session = request.getSession();
+				
+		if(pressed.equals( "Login"))
+			action = 1;
+		else if( pressed.equals( "Register"))
+			action = 2;
+		else if( pressed.equals( "Send Email"))
+			action = 3;
+		
+		HttpURLConnection urlConn = ConnectionProvider.getUrlConnection( action);
+
+		urlConn.setDoInput (true);
+		urlConn.setDoOutput (true);
+		urlConn.setUseCaches (false);
+		urlConn.setInstanceFollowRedirects(false); 
+		
+		urlConn.setRequestMethod("POST");	
+		String urlParameters = getXMLasString( action, request);
+		
+		urlConn.setRequestProperty("Content-Type","text/xml");
+		urlConn.setRequestProperty("charset", "utf-8");
+		urlConn.setRequestProperty("Content-Length", "" + Integer.toString(urlParameters.getBytes().length));
+		
+/*		DataOutputStream output = new DataOutputStream(urlConn.getOutputStream());
+		
+		output.writeBytes( urlParameters);
+		output.flush();
+		output.close();
+
+		if( urlConn.getResponseCode() == 200){*/
+			System.out.println("Login olduk amýna k.");
+			urlConn.disconnect();
+			
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("WebContent/classes/HomePage");
+			rd.forward( request, response);
+		/*	}else
+			System.out.println("Göte geldik");*/
+	}//end of doPost
+	
+	private String getXMLasString(int action, HttpServletRequest request){
+		
+		if( action == 1){
+			String username = request.getParameter("username");
+			String pass = request.getParameter("password");
+			
+			return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+						  "<user>" +
+						  		"<username>" + 
+						  			username +
+						  		"</username>" +
+						  		"<password>" +
+						  			pass + 
+						  		"</password>" +
+						  "</user>";
+		}else if( action == 2){
+			String name = request.getParameter("name");
+			String surname = request.getParameter("surname");
+			String email = request.getParameter("email");
+			
+			String username = request.getParameter("username");
+			String pass = request.getParameter("password");
+			
+			return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+			  "<user>" +
+			  		"<name>" +
+			  			name +
+			  		"</name>" + 	
+			  		"<surname>" +
+		  				surname +
+		  			"</surname>" +
+			  		"<email>" +
+		  				email +
+		  			"</email>" +
+			  		"<username>" + 
+			  			username +
+			  		"</username>" +
+			  		"<password>" +
+			  			pass + 
+			  		"</password>" +
+			  "</user>";
+		}else if( action == 3){
+			String email = request.getParameter("forgot_email");
+			
+			return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+					"<email> " +
+						email +
+					"</email>";
+		}
+		return null;
+	}//end of getXMLasString
+}//end of class Login
+

@@ -1,0 +1,58 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Nossaq Login Page</title>
+</head>
+	<link rel='stylesheet' type='text/css' href='css/login.css' />
+	<script type='text/javascript' src='scripts/LoginRegister.js'></script>
+<body>
+	<div id="header" >
+		<table class="table"><tr><td>
+		<a href=login.jsp><img src="images/nossaq.png" alt="HomePage" class="center"></a></td></tr></table>
+	</div>
+	<table class="table">
+	<tr>
+		<td>
+			<form id="login_form" name="login_form" class="forms login-form" action="LoginRegister" method="post">
+		    	<div class="header">
+	    			<h1>Login Form</h1>
+	    			<span>Fill out the form below to login Nossaq system</span>
+	    		</div>
+	   	    	<div class="content">
+			       <input id="userfield" type="text" class="input username" name="username" value="Username" onfocus="this.value=''"><label style="visibility: hidden" id="username_alert" class="alert"> Username field cannot be empty</label>
+			       <input id="passfield" type="password" class="input password" name="password" value="Password" onfocus="this.value=''"><label style="visibility: hidden" id="password_alert" class="alert"> Password field cannot be empty</label>
+			    </div>
+			    <div class="footer">
+			       <input id="login_submit" type="submit" class="button" onclick="return isEmpty( this.id);" name="submit" value="Login">
+			       <a class="forgot" href="forgot.jsp">Forgot Pass</a>
+			    </div>
+			</form>
+	 </td>
+	 <td> 
+		<form id="register_form" name="register_form" class="forms register-form" action="LoginRegister" method="post">
+         	<div class="header">
+    			<h1>Register Information</h1>
+    			<span>Fill out the form below to sign up Nossaq system</span>
+    		</div>
+    		<div class="content">
+		         <input id="namefield" type="text" name="name" class="input" value="Name" onfocus="this.value=''"><br><label class="alert" style="visibility: hidden" id="name_alert"> Name field cannot be empty</label>
+		         <input id="surnamefield" type="text" class="input" name="surname" value="Surname" onfocus="this.value=''"><label class="alert" style="visibility: hidden" id="surname_alert"> Surname field cannot be empty</label>
+		         <input id="emailfield" type="text" name="email" class="input" value="E-mail" onChange="checkemail( this.value)" onfocus="this.value=''"><br><label class="alert" style="visibility: hidden" id="email_alert"> Email field cannot be empty</label>
+		         <input id="userfield" type="text" value="Username" class="input" name="username" onfocus="this.value=''"><label class="alert" style="visibility: hidden" id="username2_alert" onfocus="this.value=''"> Username field cannot be empty</label>
+		         <br><br><span>Please type your password below</span>
+		         <input id="pass1field" type="password" class="input" name="pass1" onfocus="this.value=''"><label class="alert" style="visibility: hidden" id="pass1_alert"> Password field cannot be empty</label>
+		         <br><span>Please retype your password below</span>
+		         <input id="pass2field" type="password" class="input" name="pass2" onfocus="this.value=''"><label class="alert" style="visibility: hidden" id="pass2_alert"> Password field cannot be empty</label>
+		    </div>
+		    <div class="footer">
+		         <input id="register_submit" type="submit" class="button" name="submit" onclick="return isEmpty( this.id);" value="Sign Up">
+		    </div>
+        </form>
+	</td>
+	</tr>
+	</table>
+</body>
+</html>

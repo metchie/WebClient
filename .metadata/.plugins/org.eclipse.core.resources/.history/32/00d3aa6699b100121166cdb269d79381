@@ -1,0 +1,47 @@
+package javaclasses;
+
+import java.io.IOException;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+
+public class XMLParser {
+	
+	private String xml;
+	Document doc;
+	
+	public XMLParser(String xml){
+		
+		this.xml = xml;
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder;
+		try {
+			dBuilder = dbFactory.newDocumentBuilder();
+			this.doc = dBuilder.parse( this.xml);
+			doc.getDocumentElement().normalize();
+			
+		} catch (SAXException saxe) {
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public String getStartDate(){
+		
+		
+	}
+
+}
+
+

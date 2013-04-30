@@ -1,0 +1,23 @@
+package javaclasses;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import com.sun.xml.internal.txw2.Document;
+
+public class XMLParser {
+	
+	private String xml;
+	Document doc;
+	
+	public XMLParser(String xml){
+		
+		this.xml = xml;
+		doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse( xml);
+	}
+	
+	public String getStartDate(){
+		
+		
+	}
+
+}

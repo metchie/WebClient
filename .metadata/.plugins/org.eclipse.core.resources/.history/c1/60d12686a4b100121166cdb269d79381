@@ -1,0 +1,53 @@
+package javaclasses;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+@WebServlet("/HomePage")
+public class HomePage extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	private static XMLParser parser;
+	
+    public HomePage() {
+        super();
+    }
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		HttpURLConnection urlConn = ConnectionProvider.getUrlConnection( 4);
+		HttpSession session = request.getSession();
+		parser = new XMLParser();
+		
+		urlConn.setDoInput (true);
+		urlConn.setDoOutput (true);
+		urlConn.setUseCaches (false);
+		urlConn.setInstanceFollowRedirects(false); 
+		
+		urlConn.setRequestMethod("GET");	
+		String urlParameters = getXMLasString( request);
+		//yolladýk aldýk
+		//String responseMessage = urlConn.getResponseMessage();
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><event><startDate>12.05.2013.12.30</startDate></event>";
+		parser.setXML( xml);
+		System.out.println("HP: " + parser.getStartDate());
+		response.sendRedirect("weekcalendar_full_demo.jsp");
+		
+	}
+
+	private String getXMLasString(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet( request, response);
+		
+	}
+}

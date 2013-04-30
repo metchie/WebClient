@@ -1,0 +1,11 @@
+127.0.0.1 - - [10/Apr/2013:16:49:23 +0300] "GET / HTTP/1.1" 404 951
+127.0.0.1 - - [10/Apr/2013:16:49:35 +0300] "GET /CalendarDeneme/login.jsp HTTP/1.1" 200 653
+127.0.0.1 - - [10/Apr/2013:16:49:40 +0300] "POST /CalendarDeneme/Login HTTP/1.1" 500 1622
+127.0.0.1 - - [10/Apr/2013:16:50:04 +0300] "GET /CalendarDeneme/weekcalendar_full_demo.jsp HTTP/1.1" 200 3459
+127.0.0.1 - - [10/Apr/2013:16:50:04 +0300] "GET /CalendarDeneme/css/reset.css HTTP/1.1" 200 1170
+127.0.0.1 - - [10/Apr/2013:16:50:04 +0300] "GET /CalendarDeneme/css/jquery.weekcalendar.css HTTP/1.1" 200 2601
+127.0.0.1 - - [10/Apr/2013:16:50:04 +0300] "GET /CalendarDeneme/css/demo.css HTTP/1.1" 200 1009
+127.0.0.1 - - [10/Apr/2013:16:50:04 +0300] "GET /CalendarDeneme/scripts/jquery.weekcalendar.js HTTP/1.1" 200 52874
+127.0.0.1 - - [10/Apr/2013:16:50:04 +0300] "GET /CalendarDeneme/scripts/demo.js HTTP/1.1" 200 9241
+127.0.0.1 - - [10/Apr/2013:16:50:07 +0300] "GET /CalendarDeneme/css/images/header-bg.png HTTP/1.1" 404 1029
+127.0.0.1 - - [10/Apr/2013:16:50:12 +0300] "GET /CalendarDeneme/libs/css/smoothness/images/ui-bg_glass_65_ffffff_1x400.png HTTP/1.1" 200 105

@@ -1,0 +1,7 @@
+INDEX VERSION 1.122+C:\Users\Ovunc\Desktop\Nossaq\WebClient\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+3008992951.index
+3938171134.index
+4248398363.index
+4100994582.index
+1702954377.index
+1040693364.index

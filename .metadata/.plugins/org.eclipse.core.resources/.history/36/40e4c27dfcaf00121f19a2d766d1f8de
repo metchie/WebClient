@@ -1,0 +1,126 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
+
+
+public class LargeFileDonwloader extends FileDownloader{
+	
+	//Variables
+	static int numOfThreads;
+	static long endTime;
+	static long startTime;
+	/**
+	 * HTTP large file downloader program.
+	 * 
+	 * @author Kaan Bingöl & Övünç Sezer
+	 * @param args
+	 * @throws InterruptedException 
+	 */
+	public static void main(String[] args) {
+		
+		if(args.length == 3){
+			try{
+				String[] list1 = splitURL(args[0]);
+				String[] list2 = splitURL(args[1]);
+				int fileLength = getFileLength(list1[0], list1[1], list1[2]);
+				numOfThreads = Integer.parseInt(args[2]);
+				int sizeOfParts = (int) Math.ceil((double)fileLength/numOfThreads);
+				Thread[] threads = new DownloaderThread[numOfThreads];
+				startTime = System.currentTimeMillis();
+				
+				for(int i = 0; i < Math.floor(numOfThreads/2); i++){
+					threads[i*2] = new DownloaderThread(i*2+1, list1[0], list1[1], list1[2], i*2*sizeOfParts, 
+							((i*2+1)*sizeOfParts)-1);
+					threads[i*2].start();
+
+					threads[i*2+1] = new DownloaderThread(i*2+2, list2[0], list2[1], list2[2], (i*2+1)*sizeOfParts, 
+							((i*2+2)*sizeOfParts)-1);
+					threads[i*2+1].start();
+				}
+				
+				if(numOfThreads%2 != 0){
+					threads[numOfThreads-1] = new DownloaderThread(numOfThreads, list1[0], list1[1], list1[2], 
+							(numOfThreads-1)*sizeOfParts, fileLength-1);
+					threads[numOfThreads-1].start();
+				}		
+
+				for(int i = 0; i < numOfThreads; i++){
+					threads[i].join();
+				}
+				
+				DownloaderThread.fileWriter.close();
+				System.out.println("Total time = " + (endTime-startTime));  //print time
+				
+			}catch(InterruptedException e){
+				e.printStackTrace();
+			}
+		}
+		else if(args.length == 2){
+			try{
+				String[] list = splitURL(args[0]);
+				int fileLength = getFileLength(list[0], list[1], list[2]);
+				numOfThreads = Integer.parseInt(args[1]);
+				int sizeOfParts = (int) Math.floor(fileLength/numOfThreads);
+				Thread[] threads = new DownloaderThread[numOfThreads];
+				startTime = System.currentTimeMillis();
+				
+				for(int i = 0; i < numOfThreads-1; i++){
+					threads[i] = new DownloaderThread(i+1, list[0], list[1], list[2], i*sizeOfParts, 
+							((i+1)*sizeOfParts)-1);
+					threads[i].start();
+				}
+				
+				threads[numOfThreads-1] = new DownloaderThread(numOfThreads, list[0], list[1], list[2], 
+						(numOfThreads-1)*sizeOfParts, fileLength-1);
+				threads[numOfThreads-1].start();
+				
+				for(int i = 0; i < numOfThreads; i++){
+					threads[i].join();
+				}
+				DownloaderThread.fileWriter.close();
+				System.out.println("Total time = " + (endTime-startTime));  //print time
+				
+			}catch(InterruptedException e){
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				String[] list = splitURL(args[0]);
+				download(list[0], list[1], list[2]);
+				
+				System.out.println("Total time = " + (endTime-startTime));	//print time
+			} catch (IOException e) {
+		
+				e.printStackTrace();
+			}
+		}	
+
+	}
+	
+	protected static int getFileLength(String host, String path, String fileName){
+		try {
+			String message;
+			Socket sock = new Socket(host, 80);
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+			
+			writer.write("HEAD " + path + " HTTP/1.1\r\n" +
+						 "Host: " + host + "\r\n" +
+						 "\r\n");
+			writer.flush();
+			
+			BufferedReader reader = new BufferedReader(new InputStreamReader (sock.getInputStream()));
+	
+			while((message = reader.readLine()) != null){
+				System.out.println(message);
+				if( message.indexOf("Content-Length: ") == 0)
+					return Integer.parseInt( message.substring(16));
+			}
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+}

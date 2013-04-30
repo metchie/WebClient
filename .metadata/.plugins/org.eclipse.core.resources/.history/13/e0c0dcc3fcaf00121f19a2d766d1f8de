@@ -1,0 +1,133 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+
+public class FileDownloader {
+
+	/**
+	 * HTTP file downloader program.
+	 * 
+	 * @author Kaan Bingöl & Övünç Sezer
+	 * @param args
+	 */
+	protected static void download(String host, String path, String fileName) throws IOException {
+		Socket sock = new Socket(host, 80);
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+		
+		writer.write("GET " + path + " HTTP/1.1\r\n" +
+					"Host: " + host + "\r\n" +
+					"\r\n");
+		writer.flush();
+		LargeFileDonwloader.startTime = System.currentTimeMillis();
+		BufferedReader reader = new BufferedReader(new InputStreamReader (sock.getInputStream()));
+		LargeFileDonwloader.endTime = System.currentTimeMillis();
+		String message;
+		boolean isContent = false;
+		PrintWriter fileWriter = new PrintWriter(fileName, "UTF-8");
+
+		while((message = reader.readLine()) != null){ 
+			
+			if(!isContent){	
+				System.out.println(message);
+			
+				if(message.contains("Content-Type:")){
+					isContent = true;
+				}
+			}
+			else{
+				if(!message.equals(""))
+					fileWriter.println(message);
+
+			}	
+		}
+		
+		fileWriter.println();
+		fileWriter.close();
+		reader.close();
+		sock.close();
+		
+	}
+
+	protected static void partialDownload(String host, String path, String fileName,
+			String lower, String higher) throws IOException {
+		int lowerByte = Integer.parseInt(lower);
+		int higherByte = Integer.parseInt( higher);
+		int length = 0;
+		String message;
+		
+		if( lowerByte < 0)
+			System.out.println("Lower limit of the range cannot be negative!");
+		else{
+			
+			Socket sock = new Socket(host, 80);
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+			
+			writer.write("HEAD " + path + " HTTP/1.1\r\n" +
+						 "Host: " + host + "\r\n" +
+						 "\r\n");
+			writer.flush();
+			
+			BufferedReader reader = new BufferedReader(new InputStreamReader (sock.getInputStream()));
+
+			while((message = reader.readLine()) != null){
+				System.out.println(message);
+				if( message.indexOf("Content-Length: ") == 0)
+					length = Integer.parseInt( message.substring(16));
+			}
+			
+			if( higherByte >= length)
+				System.out.println("Higher limit of the range cannot be greater than the length of the file!");
+			else{
+			
+				sock.close();
+				sock = new Socket(host, 80);
+				
+				writer = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+				writer.write("GET " + path + " HTTP/1.1\r\n" +
+							 "Host: " + host + "\r\n" +
+							 "Range: bytes=" + lowerByte +"-"+ higherByte +"\r\n"	+
+							"\r\n");
+				writer.flush();
+
+				reader = new BufferedReader(new InputStreamReader (sock.getInputStream()));
+				boolean isContent = false;
+				PrintWriter fileWriter = new PrintWriter(fileName, "UTF-8");
+				while((message = reader.readLine()) != null){
+					System.out.println(message);
+					if(message.contains("Content-Type:")){
+						isContent = true;
+					}
+					else if(!message.contains("Content-Type:") && isContent) {
+						if(!message.equals(""))
+							fileWriter.println(message);
+					}	
+				}
+				fileWriter.close();
+			}
+			reader.close();
+			sock.close();
+		}	
+	}
+	
+	/**
+	 * Splits host, path and file name from URL
+	 * 
+	 * @param url 
+	 * @return list contains URL at index 0 and path at index 1
+	 * 			and file name at index 2
+	 */
+	protected static String[] splitURL(String url){
+		String params[] = new String[3]; 
+		String [] list = url.split("/", 2);
+		params[0] = list[0];
+		params[1] = "/" + list[1];
+		params[2] = list[1].split("/")[list[1].split("/").length - 1];
+		return params;
+	}
+
+}

@@ -1,0 +1,84 @@
+function isEmpty( clicked_id){
+	var error = false;
+	if( clicked_id == "login_submit"){
+		if( document.forms['login_form'].username.value == "" || document.forms['login_form'].username.value == "Username"){
+			document.getElementById("username_alert").style.visibility = 'visible';
+		    error = true;
+		}if( document.forms['login_form'].password.value == "" || document.forms['login_form'].username.value == "Password"){
+			document.getElementById("password_alert").style.visibility = 'visible';
+	    	error = true;
+		}
+		return !error;
+	}else{
+		if( document.forms['register_form'].name.value == "" || document.forms['login_form'].username.value == "Name"){
+			document.getElementById("name_alert").style.visibility = 'visible'; 
+			error = true;
+		}else{
+			document.getElementById("name_alert").style.visibility = 'hidden';
+		}
+		
+		if( document.forms['register_form'].surname.value == "" || document.forms['login_form'].username.value == "Surname"){
+			document.getElementById("surname_alert").style.visibility = 'visible';
+			error = true;
+	    }else{
+			document.getElementById("surname_alert").style.visibility = 'hidden';
+		}
+		
+		if( document.forms['register_form'].email.value == "" || document.forms['login_form'].username.value == "E-mail"){
+			document.getElementById("email_alert").style.visibility = 'visible';
+			error = true;
+	    }else{
+			document.getElementById("email_alert").style.visibility = 'hidden';
+		}
+		
+		if( document.forms['register_form'].username.value == "" || document.forms['login_form'].username.value == "Username"){
+			document.getElementById("username2_alert").style.visibility = 'visible';
+			error = true;
+	    }else{
+			document.getElementById("username2_alert").style.visibility = 'hidden';
+		}
+		
+		if( document.forms['register_form'].pass1.value == ""){
+			document.getElementById("pass1_alert").style.visibility = 'visible';
+			error = true;
+	    }else{
+			document.getElementById("pass1_alert").style.visibility = 'hidden';
+		}
+		
+		if( document.forms['register_form'].pass2.value == ""){
+			document.getElementById("pass2_alert").style.visibility = 'visible';
+			error = true;
+	    }else{
+			document.getElementById("pass2_alert").style.visibility = 'hidden';
+		}
+		
+		return comparePasswords() && !error;
+	}
+}
+
+//Advanced Email Check credit-
+//By JavaScript Kit (http://www.javascriptkit.com)
+//Over 200+ free scripts here!
+function checkemail( emailstr){
+	
+	var filter=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+	
+	if ( filter.test( emailstr))
+		return true;
+	else{
+		
+		alert("Please input a valid email address!");
+		document.forms['register_form'].email.focus();
+		return false;
+	}
+}
+
+function comparePasswords(){
+	
+	if( document.forms['register_form'].pass1.value == document.forms['register_form'].pass2.value)
+		return true;
+	else{
+		alert("Passwords do not match");
+		return false;
+	}
+}

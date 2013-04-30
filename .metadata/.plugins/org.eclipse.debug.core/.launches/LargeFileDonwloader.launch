@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/Network 2/src/LargeFileDonwloader.java"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="LargeFileDonwloader"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="www.cs.bilkent.edu.tr/~morhan/cs421/rand1MB.txt wlab.cs.bilkent.edu.tr/~cs421/pa2/rand1MB.txt 50"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Network 2"/>
+</launchConfiguration>
